@@ -70,7 +70,7 @@ class RootProblem:
         # Construct base problem...
         #   e.g. a base mip.
 
-    def solve(self, fixed_vars: list[tuple]) -> tuple[float, Any]:
+    def solve(self, fixed_vars: list[tuple]) -> tuple[float | None, Any]:
         """
         Solves the root problem with a list of fixed values.
         Specific implementation should depend on application.
@@ -80,7 +80,7 @@ class RootProblem:
          - bound (float) : upper/lower bound of subproblem
          - partial_solution (any) : a partial solution (usually fractional)
         """
-        bound: float = 0.0
+        bound: float | None = None
         partial_solution: Any = None
         return bound, partial_solution
 
@@ -129,7 +129,7 @@ class Node:
         else:
             return [self._fixed_var] + self._parent_node.get_fixed_vars()
 
-    def solve(self) -> tuple[float, Any]:
+    def solve(self) -> tuple[float | None, Any]:
         """
         Solves this node, based on the info in this branch and the root problem
         Returns the bound, and the partial solution.
@@ -201,6 +201,10 @@ class BranchAndBoundSolver:
 
             # Solve the node
             node_bound, partial_solution = node.solve()
+
+            # Check if node problem was feasible
+            if node_bound is None:
+                continue
 
             # Attempt to repair
             repaired_solution = self._heuristic_repair(partial_solution)
