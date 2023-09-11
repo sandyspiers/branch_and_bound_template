@@ -1,4 +1,4 @@
-# Abstract Branch and Bound
+# Branch and Bound Template
 
 This repository contains a structured template for a branch and bound algorithm.
 This allows for rapid testing and experimentation of your B&B ideas.
