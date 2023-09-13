@@ -13,18 +13,30 @@ class KnapsackProblem:
      - c : capacity
     """
 
-    def __init__(self, num_items: int) -> None:
+    def __init__(self, profits: np.ndarry, weights: np.ndarray, capacity: int) -> None:
         """
         Random problem instance of given size
         """
         # Generate problem instance
-        self.n = num_items
-        self.p = np.random.randint(1, num_items, size=num_items)
-        self.w = np.random.randint(1, num_items, size=num_items)
-        self.c = np.random.randint(self.w.min(), self.w.sum())
+        assert len(weights) == len(profits)
+        self.n = len(weights)
+        self.p = profits
+        self.w = weights
+        self.c = capacity
         self.sense = "max"
-        # Precalculate ratios to avoid doing at every node
+        # Precalculate ratios to avoid doing at every node of search tree
         self.argsorted_ratios = np.argsort(self.p / self.w)[::-1]
+
+    @classmethod
+    def random(cls, num_items: int) -> None:
+        """
+        Random problem instance of given size
+        """
+        # Generate problem instance
+        p = np.random.randint(1, num_items, size=num_items)
+        w = np.random.randint(1, num_items, size=num_items)
+        c = np.random.randint(w.min(), w.sum())
+        return cls(p, w, c)
 
 
 class Solution:

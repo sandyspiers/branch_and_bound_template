@@ -5,7 +5,7 @@ from docplex.mp.model import Model
 def test_agree():
     # Create problem instance
     n = 100
-    kp = KnapsackProblem(n)
+    kp = KnapsackProblem.random(n)
 
     # Solve using cplex
     m = Model()
